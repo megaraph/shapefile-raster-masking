@@ -2,7 +2,7 @@ import time
 import fiona
 import rasterio
 import rasterio.mask
-from shapely.geometry import shape
+from remove_bg import remove_bg
 
 # config variables
 from config import SHP_PATH, IMG_DIR_PATH, IMG_EXT, OUT_DIR_PATH, OUT_EXT
@@ -26,10 +26,10 @@ def main():
 
     # Open Raster files
     print("\nLocating rasters...") # PROGRESS UPDATE
-    rasters = get_raster_files(IMG_DIR_PATH)
+    rasters = get_image_files(IMG_DIR_PATH)
     print(f"Located {len(rasters)} rasters...") # PROGRESS UPDATE
 
-    print("\n***MASKING RASTERS***...") # PROGRESS UPDATE
+    print("\n***MASKING RASTERS*** ...") # PROGRESS UPDATE
     masks = 0
     for index, raster in enumerate(rasters):
         raster_path = str(raster)
@@ -49,7 +49,7 @@ def main():
                         "transform": out_transform,
         })
 
-        # Download raster
+        # Download masked image 
         print(f"In Progress: Downloading Raster {out_path}...") # PROGRESS UPDATE
         with rasterio.open(out_path, "w", **out_meta) as dest:
             dest.write(out_image)
@@ -57,11 +57,20 @@ def main():
         masks = index
         print(f"Finished: Successfully Masked Raster {index}!!") # PROGRESS UPDATE
 
+    # Remove background for each file
+    print("\n***REMOVING BACKGROUNDS*** ...") # PROGRESS UPDATE
+    masked_images = get_image_files(OUT_DIR_PATH)
+
+    for index, image in enumerate(masked_images):
+        remove_bg(str(image), str(image))
+
+    print("Removed Backgrounds!!")
+
     return masks + 1
 
 
 
-def get_raster_files(dir_path):
+def get_image_files(dir_path):
     files = [file for file in dir_path.iterdir() if file.is_file() and file.suffix.lower() in IMG_EXT]
 
     return files
