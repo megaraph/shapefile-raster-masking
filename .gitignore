@@ -163,3 +163,4 @@ cython_debug/
 # project specific stuff
 shapefile_masks/
 raster_images/
+masked_outputs/
