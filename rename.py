@@ -1,3 +1,4 @@
+import time
 from config import OUT_DIR_PATH, OUT_EXT
 
 def rename_files():
@@ -12,7 +13,14 @@ def rename_files():
         # Rename the file
         file.rename(new_file)
         print(f"Renamed {file} to {new_file}")
+    
+    return len(masked_files)
 
 
 if __name__ == "__main__":
-    rename_files()
+    start_time = time.time()
+    rename_count = rename_files()
+    end_time = time.time()
+
+    elapsed_time = end_time - start_time
+    print(f"\nRenamed {rename_count} files in {elapsed_time:.2f} seconds")
