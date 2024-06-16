@@ -25,8 +25,6 @@ def move():
             print(f"Moved: {tiff_file.name} to {processed_rasters_path}")
 
 
-print("All processed raster images have been moved.")
-
-
 if __name__ == "__main__":
     move()
+    print("All processed raster images have been moved.")
