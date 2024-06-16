@@ -164,3 +164,4 @@ cython_debug/
 shapefile_masks/
 raster_images/
 masked_outputs/
+processed_rasters/
