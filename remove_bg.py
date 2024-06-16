@@ -1,24 +1,25 @@
-import cv2 
+import cv2
 
-def remove_bg(masked_filename, remove_filename):
 
-    # Read the image 
-    src = cv2.imread(masked_filename, 1) 
+def remove_bg(filename):
 
-    # Convert image to image gray 
-    tmp = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY) 
+    # Read the image
+    src = cv2.imread(filename, 1)
 
-    # Applying thresholding technique 
-    _, alpha = cv2.threshold(tmp, 0, 255, cv2.THRESH_BINARY) 
+    # Convert image to image gray
+    tmp = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
-    # Using cv2.split() to split channels of coloured image 
-    b, g, r = cv2.split(src) 
+    # Applying thresholding technique
+    _, alpha = cv2.threshold(tmp, 0, 255, cv2.THRESH_BINARY)
 
-    # Making list of Red, Green, Blue Channels and alpha 
-    rgba = [b, g, r, alpha] 
+    # Using cv2.split() to split channels of coloured image
+    b, g, r = cv2.split(src)
 
-    # Using cv2.merge() to merge rgba into a coloured/multi-channeled image 
-    dst = cv2.merge(rgba, 4) 
+    # Making list of Red, Green, Blue Channels and alpha
+    rgba = [b, g, r, alpha]
 
-    # Writing and saving to a new image 
-    cv2.imwrite(remove_filename, dst)
+    # Using cv2.merge() to merge rgba into a coloured/multi-channeled image
+    dst = cv2.merge(rgba, 4)
+
+    # Writing and saving to a new image
+    cv2.imwrite(filename, dst)
